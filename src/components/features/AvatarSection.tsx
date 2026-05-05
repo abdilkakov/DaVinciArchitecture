@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import avatarImg from "@/assets/avatar.jpg";
-import neuroVideo from "@/assets/28.mp4";
+// Video file will be loaded when available
+const neuroVideo = "";
 
 const skills = [
   { name: "Архитектурный дизайн", level: 92 },
