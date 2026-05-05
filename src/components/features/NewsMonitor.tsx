@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { RefreshCw, ExternalLink, TrendingUp, Clock, Search } from "lucide-react";
+import axios from "axios";
 
 interface NewsItem {
   id: number;
@@ -91,12 +92,17 @@ const trendBadge = {
 };
 
 export default function NewsMonitor() {
-  const [news, setNews] = useState<NewsItem[]>(mockNews);
+  const [news, setNews] = useState<NewsItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState("Все");
   const [searchQuery, setSearchQuery] = useState("");
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [lastUpdated, setLastUpdated] = useState("2 мин. назад");
+  const [lastUpdated, setLastUpdated] = useState("загрузка...");
   const sectionRef = useRef<HTMLDivElement>(null);
+
+  // Google Sheets CSV export URL (converted from the pubhtml URL)
+  const sheetsUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8quFqTOt6wCX4mNYS9Xlo7BhgPMNI5HXGR5fcvwSAeZGYVBopscEIbEhPmrGkmYmcXbS44HwO4PjZ/pub?output=csv";
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -112,12 +118,82 @@ export default function NewsMonitor() {
     return () => observer.disconnect();
   }, []);
 
-  const handleRefresh = () => {
+  const fetchNews = async () => {
+    try {
+      setError(null);
+      const response = await axios.get(sheetsUrl);
+      const csvData = response.data;
+
+      // Parse CSV data
+      const rows = csvData.split('\n').filter(row => row.trim());
+      if (rows.length < 2) {
+        throw new Error('Недостаточно данных в таблице');
+      }
+
+      const headers = rows[0].split(',').map(h => h.replace(/"/g, '').trim());
+      const dataRows = rows.slice(1);
+
+      const newsData: NewsItem[] = dataRows.map((row, index) => {
+        const cols = row.split(',').map(col => col.replace(/"/g, '').trim());
+
+        // Map CSV columns to NewsItem properties
+        const title = cols[1] || 'Без заголовка';
+        const summary = cols[2] || 'Без описания';
+        const source = cols[3] || 'Неизвестный источник';
+        const category = cols[5] || 'Общее';
+        const date = cols[0] ? new Date(cols[0]).toLocaleDateString('ru-RU') : 'Недавно';
+
+        // Calculate relevance based on title and summary length (simplified)
+        const relevance = Math.min(100, Math.max(50, (title.length + summary.length) / 2));
+
+        // Determine trend based on relevance and category
+        let trend: "up" | "neutral" | "hot" = "neutral";
+        if (relevance > 90) trend = "hot";
+        else if (relevance > 75) trend = "up";
+
+        // Estimate read time
+        const readTime = Math.max(2, Math.ceil((title.length + summary.length) / 200));
+
+        return {
+          id: index + 1,
+          title,
+          source,
+          date,
+          category,
+          summary,
+          relevance: Math.round(relevance),
+          trend,
+          readTime
+        };
+      });
+
+      setNews(newsData);
+      setLastUpdated(new Date().toLocaleTimeString('ru-RU', {
+        hour: '2-digit',
+        minute: '2-digit'
+      }));
+    } catch (err) {
+      console.error('Error fetching news:', err);
+      setError('Не удалось загрузить новости. Используются демонстрационные данные.');
+      // Fallback to mock data
+      setNews(mockNews);
+      setLastUpdated("демо-данные");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchNews();
+  }, []);
+
+  const handleRefresh = async () => {
     setIsRefreshing(true);
-    setTimeout(() => {
+    try {
+      await fetchNews();
+    } finally {
       setIsRefreshing(false);
-      setLastUpdated("только что");
-    }, 2000);
+    }
   };
 
   const filteredNews = news.filter((item) => {
@@ -153,8 +229,16 @@ export default function NewsMonitor() {
             {/* Status */}
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                <span className="font-body text-xs text-parchment/60">ИИ-мониторинг активен</span>
+                {isLoading ? (
+                  <div className="w-2 h-2 rounded-full bg-yellow-400 animate-pulse" />
+                ) : error ? (
+                  <div className="w-2 h-2 rounded-full bg-red-400" />
+                ) : (
+                  <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                )}
+                <span className="font-body text-xs text-parchment/60">
+                  {isLoading ? "Загрузка..." : error ? "Ошибка загрузки" : "ИИ-мониторинг активен"}
+                </span>
               </div>
               <div className="flex items-center gap-1 text-parchment/40">
                 <Clock size={12} />
