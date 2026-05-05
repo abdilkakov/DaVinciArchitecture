@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import avatarImg from "@/assets/avatar.jpg";
+import neuroVideo from "@/assets/28.mp4";
 
 const skills = [
   { name: "Архитектурный дизайн", level: 92 },
@@ -190,58 +191,46 @@ export default function AvatarSection() {
             </div>
           </div>
         </div>
-          {/* Neural avatar video block */}
-          <div className="mt-16 animate-on-scroll">
-            <div className="text-center mb-6">
-              <h3 className="font-display text-2xl italic text-gold-400">Нейроаватар</h3>
-              <p className="font-body text-sm text-parchment/45 mt-1">Изучение архитектуры через интерактивный ЦИФровой аватар</p>
-            </div>
-            <div className="relative group overflow-hidden rounded-sm border border-gold-500/20 bg-forest-950/60" style={{ minHeight: '400px' }}>
-              <video
-                className="w-full h-full object-cover"
-                controls
-                loop
-                playsInline
-                src=""
-                style={{ minHeight: '400px', display: 'none' }}
-              />
-              {/* Placeholder overlay */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 p-8">
-                {/* Animated rings */}
-                <div className="relative w-24 h-24 flex items-center justify-center">
-                  <div className="absolute inset-0 border border-gold-500/20 rounded-full animate-ping" style={{ animationDuration: '3s' }} />
-                  <div className="absolute inset-2 border border-gold-500/15 rounded-full animate-ping" style={{ animationDuration: '3s', animationDelay: '0.5s' }} />
-                  <div
-                    className="w-16 h-16 rounded-full border border-gold-500/40 flex items-center justify-center group-hover:border-gold-500/70 transition-colors"
-                    style={{ background: 'radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%)' }}
-                  >
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-gold-500/70">
-                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                      <circle cx="12" cy="7" r="4" />
-                    </svg>
-                  </div>
-                </div>
+        {/* Neural avatar video block */}
+        <div className="mt-16 animate-on-scroll">
+          <div className="text-center mb-6">
+            <h3 className="font-display text-2xl italic text-gold-400">Нейроаватар</h3>
+            <p className="font-body text-sm text-parchment/45 mt-1">Изучение архитектуры через интерактивный ЦИФровой аватар</p>
+          </div>
+          <div className="relative group overflow-hidden rounded-sm border border-gold-500/20 bg-forest-950/60" style={{ minHeight: '400px' }}>
+            <video
+              className="w-full h-full object-cover"
+              controls
+              loop
+              playsInline
+              src={neuroVideo}
+              style={{ minHeight: '400px' }}
+            />
+            <div className="absolute inset-0 border border-gold-500/10 pointer-events-none" />
+            <div className="renaissance-corner corner-tl" />
+            <div className="renaissance-corner corner-tr" />
+            <div className="renaissance-corner corner-bl" />
+            <div className="renaissance-corner corner-br" />
+          </div>
+        </div>
 
-                <div className="text-center">
-                  <p className="font-display text-2xl italic text-parchment/60 mb-2">Видео нейроаватара</p>
-                  <p className="font-body text-sm text-parchment/35">Укажите src в элементе &lt;video&gt; для загрузки ролика</p>
-                  <div className="flex items-center justify-center gap-3 mt-4">
-                    {['AI аватар', 'D-ID', 'HeyGen', 'Synthesia'].map((tag) => (
-                      <span key={tag} className="font-body text-[10px] tracking-widest uppercase text-gold-500/40 border border-gold-500/15 px-3 py-1 rounded-sm">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div className="absolute inset-0 border border-gold-500/10 pointer-events-none" />
-              <div className="renaissance-corner corner-tl" />
-              <div className="renaissance-corner corner-tr" />
-              <div className="renaissance-corner corner-bl" />
-              <div className="renaissance-corner corner-br" />
+        {/* AI Tools Description */}
+        <div className="mt-10 animate-on-scroll">
+          <div className="glass-card p-6 border-l-2 border-gold-500/40">
+            <h4 className="font-display text-lg italic text-gold-400 mb-4 flex items-center gap-2">
+              <span className="text-gold-500/60">✦</span> Описание нейроаватара
+            </h4>
+            <div>
+              <p className="font-body text-xs tracking-widest uppercase text-gold-500/70 mb-1">Нейроаватар</p>
+              <p className="font-body text-sm text-parchment/70 leading-relaxed">
+                Создано в <span className="text-gold-400 font-medium">HeyGen</span>. Выбран аватар делового стиля. Язык: русский.
+              </p>
+              <p className="font-body text-xs text-parchment/50 mt-1 italic">
+                Промпт для озвучки: "Добро пожаловать в проект 'Архитектура будущего глазами да Винчи'. Леонардо да Винчи ещё в 1485 году мечтал о городе, который дышит и живёт вместе с природой. Сегодня его идеи воплощаются в вертикальных садах, биофильном дизайне и умных эко-зданиях."
+              </p>
             </div>
           </div>
+        </div>
       </div>
     </section>
   );

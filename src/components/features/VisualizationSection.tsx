@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import vizImg from "@/assets/3d-visualization.jpg";
+import ecoVideo from "@/assets/26.mp4";
 
 const projects = [
   {
@@ -115,25 +116,22 @@ export default function VisualizationSection() {
             <button
               key={p.id}
               onClick={() => setActiveProject(i)}
-              className={`text-left p-5 rounded-sm border transition-all duration-300 ${
-                activeProject === i
-                  ? "border-gold-500/60 bg-forest-700/40 shadow-gold"
-                  : "border-gold-500/15 bg-forest-900/40 hover:border-gold-500/30"
-              }`}
+              className={`text-left p-5 rounded-sm border transition-all duration-300 ${activeProject === i
+                ? "border-gold-500/60 bg-forest-700/40 shadow-gold"
+                : "border-gold-500/15 bg-forest-900/40 hover:border-gold-500/30"
+                }`}
             >
               <div className="flex items-start justify-between mb-3">
-                <span className={`font-body text-xs tracking-widest uppercase ${
-                  activeProject === i ? "text-gold-400" : "text-parchment/40"
-                }`}>
+                <span className={`font-body text-xs tracking-widest uppercase ${activeProject === i ? "text-gold-400" : "text-parchment/40"
+                  }`}>
                   {p.status}
                 </span>
                 <span className="font-display text-2xl font-light text-gold-500/20">
                   {String(i + 1).padStart(2, "0")}
                 </span>
               </div>
-              <h3 className={`font-display text-lg font-medium mb-1 ${
-                activeProject === i ? "text-parchment" : "text-parchment/70"
-              }`}>
+              <h3 className={`font-display text-lg font-medium mb-1 ${activeProject === i ? "text-parchment" : "text-parchment/70"
+                }`}>
                 {p.name}
               </h3>
               <p className="font-body text-xs text-parchment/50">{p.type} · {p.year}</p>
@@ -209,39 +207,32 @@ export default function VisualizationSection() {
               loop
               muted
               playsInline
-              src=""
-              style={{ minHeight: '380px', display: 'none' }}
+              src={ecoVideo}
+              style={{ minHeight: '380px' }}
             />
-            {/* Placeholder — скроется когда добавите src к video */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 p-8">
-              <div className="relative">
-                <div
-                  className="w-20 h-20 rounded-full flex items-center justify-center border border-gold-500/30 group-hover:border-gold-500/60 transition-colors"
-                  style={{ background: 'rgba(201,168,76,0.05)' }}
-                >
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-gold-500/70 ml-1">
-                    <polygon points="5 3 19 12 5 21 5 3" />
-                  </svg>
-                </div>
-                <div className="absolute -inset-3 border border-gold-500/10 rounded-full" />
-              </div>
-              <div className="text-center">
-                <p className="font-display text-2xl italic text-parchment/60 mb-2">3D-ролик эко-проектирования</p>
-                <p className="font-body text-sm text-parchment/35">Укажите src в элементе &lt;video&gt; для воспроизведения</p>
-                <div className="flex items-center justify-center gap-3 mt-4">
-                  {['Рендер', 'Анимация', 'Параметрика'].map((tag) => (
-                    <span key={tag} className="font-body text-[10px] tracking-widest uppercase text-gold-500/40 border border-gold-500/15 px-3 py-1 rounded-sm">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
             <div className="absolute inset-0 border border-gold-500/10 pointer-events-none" />
             <div className="renaissance-corner corner-tl" />
             <div className="renaissance-corner corner-tr" />
             <div className="renaissance-corner corner-bl" />
             <div className="renaissance-corner corner-br" />
+          </div>
+        </div>
+
+        {/* AI Tools Description */}
+        <div className="mt-10 animate-on-scroll">
+          <div className="glass-card p-6 border-l-2 border-gold-500/40">
+            <h4 className="font-display text-lg italic text-gold-400 mb-4 flex items-center gap-2">
+              <span className="text-gold-500/60">✦</span> Описание видео
+            </h4>
+            <div>
+              <p className="font-body text-xs tracking-widest uppercase text-gold-500/70 mb-1">Видео</p>
+              <p className="font-body text-sm text-parchment/70 leading-relaxed">
+                Создано в <span className="text-gold-400 font-medium">Lumen5</span>.
+              </p>
+              <p className="font-body text-xs text-parchment/50 mt-1 italic">
+                Промпт: "eco architecture future, smart buildings, green facades, Leonardo da Vinci city vision, sustainable design, vertical gardens, biophilic design. Стиль: documentary, professional, calming."
+              </p>
+            </div>
           </div>
         </div>
 

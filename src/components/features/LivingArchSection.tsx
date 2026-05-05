@@ -1,5 +1,7 @@
 import { useEffect, useRef } from "react";
 import livingImg from "@/assets/living-arch.jpg";
+import projectImg from "@/assets/25.jpg";
+import projectVideo from "@/assets/25.mp4";
 
 const categories = [
   {
@@ -170,21 +172,7 @@ export default function LivingArchSection() {
           <div className="grid md:grid-cols-2 gap-6">
             {/* Additional image placeholder */}
             <div className="relative group overflow-hidden rounded-sm border border-gold-500/20 bg-forest-950/60" style={{ minHeight: '280px' }}>
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-8">
-                <div className="w-16 h-16 rounded-full border border-gold-500/30 flex items-center justify-center">
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-gold-500/60">
-                    <rect x="3" y="3" width="18" height="18" rx="2" />
-                    <circle cx="8.5" cy="8.5" r="1.5" />
-                    <polyline points="21 15 16 10 5 21" />
-                  </svg>
-                </div>
-                <div className="text-center">
-                  <p className="font-display text-lg italic text-parchment/60">Изображение проекта</p>
-                  <p className="font-body text-xs text-parchment/35 mt-1">Замените src на ссылку вашего изображения</p>
-                </div>
-              </div>
-              {/* Uncomment and add src to display actual image:
-              <img src="YOUR_IMAGE_URL" alt="Живая архитектура" className="w-full h-full object-cover" /> */}
+              <img src={projectImg} alt="Живая архитектура" className="w-full h-full object-cover" />
               <div className="absolute inset-0 border border-gold-500/10 pointer-events-none" />
               <div className="renaissance-corner corner-tl" />
               <div className="renaissance-corner corner-br" />
@@ -198,26 +186,41 @@ export default function LivingArchSection() {
                 loop
                 muted
                 playsInline
-                poster=""
-                src=""
-                style={{ minHeight: '280px', display: 'none' }}
+                src={projectVideo}
+                style={{ minHeight: '280px' }}
               />
-              {/* Placeholder overlay — скроется когда добавите src к video */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-8">
-                <div className="w-16 h-16 rounded-full border border-gold-500/30 flex items-center justify-center group-hover:border-gold-500/60 transition-colors">
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-gold-500/60">
-                    <polygon points="5 3 19 12 5 21 5 3" />
-                  </svg>
-                </div>
-                <div className="text-center">
-                  <p className="font-display text-lg italic text-parchment/60">Анимация живой архитектуры</p>
-                  <p className="font-body text-xs text-parchment/35 mt-1">Укажите src видео для воспроизведения</p>
-                  <p className="font-body text-[10px] text-gold-500/40 mt-3 tracking-widest uppercase">mp4 · webm · mov</p>
-                </div>
-              </div>
               <div className="absolute inset-0 border border-gold-500/10 pointer-events-none" />
               <div className="renaissance-corner corner-tl" />
               <div className="renaissance-corner corner-br" />
+            </div>
+          </div>
+        </div>
+
+        {/* AI Tools Description */}
+        <div className="mt-10 animate-on-scroll">
+          <div className="glass-card p-6 border-l-2 border-gold-500/40">
+            <h4 className="font-display text-lg italic text-gold-400 mb-4 flex items-center gap-2">
+              <span className="text-gold-500/60">✦</span> Описание нейросетей
+            </h4>
+            <div className="space-y-4">
+              <div>
+                <p className="font-body text-xs tracking-widest uppercase text-gold-500/70 mb-1">Изображение</p>
+                <p className="font-body text-sm text-parchment/70 leading-relaxed">
+                  Создано в <span className="text-gold-400 font-medium">Leonardo.ai</span>. Модель: Leonardo Diffusion XL.
+                </p>
+                <p className="font-body text-xs text-parchment/50 mt-1 italic">
+                  Промпт: "Futuristic eco-building with vertical gardens covering glass facade, bamboo structural elements, solar panels on roof, surrounded by lush tropical vegetation, waterfall feature, blue sky background, photorealistic architectural render, dramatic lighting, inspired by Leonardo da Vinci's ideal city concept, modern sustainable design."
+                </p>
+              </div>
+              <div className="border-t border-gold-500/10 pt-4">
+                <p className="font-body text-xs tracking-widest uppercase text-gold-500/70 mb-1">Анимация</p>
+                <p className="font-body text-sm text-parchment/70 leading-relaxed">
+                  Создано в <span className="text-gold-400 font-medium">PixVerse</span>.
+                </p>
+                <p className="font-body text-xs text-parchment/50 mt-1 italic">
+                  Промпт: "Gentle wind moving plants on building facade, clouds slowly drifting in sky, waterfall flowing, natural motion, cinematic, 5 seconds."
+                </p>
+              </div>
             </div>
           </div>
         </div>

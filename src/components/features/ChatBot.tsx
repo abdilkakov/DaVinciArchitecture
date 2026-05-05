@@ -158,11 +158,10 @@ export default function ChatBot() {
                 >
                   {/* Avatar */}
                   <div
-                    className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
-                      msg.role === "bot"
+                    className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${msg.role === "bot"
                         ? "bg-gradient-to-br from-forest-600 to-gold-600"
                         : "bg-gradient-to-br from-forest-500 to-forest-700 border border-gold-500/30"
-                    }`}
+                      }`}
                   >
                     {msg.role === "bot" ? (
                       <Bot size={14} className="text-parchment" />
@@ -173,11 +172,10 @@ export default function ChatBot() {
 
                   {/* Bubble */}
                   <div
-                    className={`max-w-[80%] px-4 py-3 rounded-sm ${
-                      msg.role === "bot"
+                    className={`max-w-[80%] px-4 py-3 rounded-sm ${msg.role === "bot"
                         ? "bg-forest-800/70 border border-gold-500/15"
                         : "bg-forest-700/80 border border-gold-500/25"
-                    }`}
+                      }`}
                   >
                     <p className="font-body text-sm text-parchment/90 leading-relaxed whitespace-pre-line">
                       {msg.text}
@@ -247,6 +245,24 @@ export default function ChatBot() {
                   <Send size={16} className="text-forest-900" />
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* AI Tools Description */}
+        <div className="mt-10 animate-on-scroll">
+          <div className="glass-card p-6 border-l-2 border-gold-500/40">
+            <h4 className="font-display text-lg italic text-gold-400 mb-4 flex items-center gap-2">
+              <span className="text-gold-500/60">✦</span> Описание чат-бота
+            </h4>
+            <div>
+              <p className="font-body text-xs tracking-widest uppercase text-gold-500/70 mb-1">Чат-бот «Виторио»</p>
+              <p className="font-body text-sm text-parchment/70 leading-relaxed">
+                Создан на платформе <span className="text-gold-400 font-medium">OnSpace AI</span>. Личность: дружелюбный консультант по биофильной архитектуре и наследию да Винчи.
+              </p>
+              <p className="font-body text-xs text-parchment/50 mt-2 italic">
+                Системный промпт: "Ты — Виторио, виртуальный консультант по эко-архитектуре. Отвечай на вопросы о вертикальных садах, биофильном дизайне, смарт-зданиях и идеях Леонардо да Винчи. Тон: профессиональный, дружелюбный. Ответы: 2-4 предложения."
+              </p>
             </div>
           </div>
         </div>

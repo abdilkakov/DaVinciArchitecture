@@ -191,11 +191,10 @@ export default function NewsMonitor() {
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`font-body text-xs px-4 py-2 rounded-sm border transition-all duration-200 ${
-                activeCategory === cat
+              className={`font-body text-xs px-4 py-2 rounded-sm border transition-all duration-200 ${activeCategory === cat
                   ? "border-gold-500/60 bg-gold-500/10 text-gold-400"
                   : "border-gold-500/15 text-parchment/50 hover:border-gold-500/30 hover:text-parchment/70"
-              }`}
+                }`}
             >
               {cat}
             </button>
@@ -273,6 +272,24 @@ export default function NewsMonitor() {
               <p className="font-body text-xs text-parchment/50 mt-1">{stat.label}</p>
             </div>
           ))}
+        </div>
+
+        {/* AI Tools Description */}
+        <div className="mt-10 animate-on-scroll">
+          <div className="glass-card p-6 border-l-2 border-gold-500/40">
+            <h4 className="font-display text-lg italic text-gold-400 mb-4 flex items-center gap-2">
+              <span className="text-gold-500/60">✦</span> Описание ИИ-агента
+            </h4>
+            <div>
+              <p className="font-body text-xs tracking-widest uppercase text-gold-500/70 mb-1">ИИ-агент</p>
+              <p className="font-body text-sm text-parchment/70 leading-relaxed">
+                Создан на платформе <span className="text-gold-400 font-medium">Zapier</span>. Агент автоматически собирает новости по ключевым словам: <span className="text-parchment/80">eco architecture, smart buildings, vertical gardens, biophilic design, sustainable architecture</span>.
+              </p>
+              <p className="font-body text-sm text-parchment/70 mt-2 leading-relaxed">
+                Данные записываются в Google Sheets в реальном времени. Столбцы: <span className="text-parchment/80">Дата | Заголовок | Описание | Источник | Ссылка | Категория</span>.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>

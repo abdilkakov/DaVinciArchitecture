@@ -54,10 +54,20 @@ export default function HeroSection() {
       {/* Content */}
       <div className="relative z-10 text-center max-w-5xl mx-auto px-6">
         {/* Eyebrow */}
-        <div className="ornament-line mb-8">
+        <div className="ornament-line mb-4">
           <span className="font-body text-xs tracking-[0.3em] uppercase text-gold-500">
             Проект
           </span>
+        </div>
+
+        {/* Author info */}
+        <div className="mb-6 space-y-1">
+          <p className="font-body text-sm text-parchment/70">
+            <span className="text-gold-500/80">Выполнила:</span> Саматдин Мадина, студент 1 курса, ОП Экология, Гуманитарной Школы
+          </p>
+          <p className="font-body text-sm text-parchment/70">
+            <span className="text-gold-500/80">Проверила:</span> старший преподаватель Неверова Е.Г.
+          </p>
         </div>
 
         {/* Main Title */}
