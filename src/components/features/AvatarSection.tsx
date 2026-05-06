@@ -204,7 +204,7 @@ export default function AvatarSection() {
               controls
               loop
               playsInline
-              src={neuroVideo}
+              src="/28.mp4"
               style={{ minHeight: '400px' }}
             />
             <div className="absolute inset-0 border border-gold-500/10 pointer-events-none" />
