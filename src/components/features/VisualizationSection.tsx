@@ -208,7 +208,6 @@ export default function VisualizationSection() {
               muted
               playsInline
               src="/25.mp4"
-              style={{ minHeight: '380px' }}
             />
             <div className="absolute inset-0 border border-gold-500/10 pointer-events-none" />
             <div className="renaissance-corner corner-tl" />
