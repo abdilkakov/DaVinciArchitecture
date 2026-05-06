@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { RefreshCw, ExternalLink, TrendingUp, Clock, Search } from "lucide-react";
+import { RefreshCw, TrendingUp, Clock, Search, ExternalLink } from "lucide-react";
 import axios from "axios";
 
 interface NewsItem {
@@ -12,6 +12,7 @@ interface NewsItem {
   relevance: number;
   trend: "up" | "neutral" | "hot";
   readTime: number;
+  link?: string;
 }
 
 const mockNews: NewsItem[] = [
@@ -104,6 +105,9 @@ export default function NewsMonitor() {
   // Google Sheets CSV export URL (converted from the pubhtml URL)
   const sheetsUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8quFqTOt6wCX4mNYS9Xlo7BhgPMNI5HXGR5fcvwSAeZGYVBopscEIbEhPmrGkmYmcXbS44HwO4PjZ/pub?output=csv";
 
+  // Auto-refresh interval (5 minutes)
+  const AUTO_REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes in milliseconds
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -124,24 +128,43 @@ export default function NewsMonitor() {
       const response = await axios.get(sheetsUrl);
       const csvData = response.data;
 
-      // Parse CSV data
-      const rows = csvData.split('\n').filter(row => row.trim());
+      // Parse CSV data properly (handles commas inside quoted fields)
+      const parseCSVRow = (row: string): string[] => {
+        const result: string[] = [];
+        let current = '';
+        let inQuotes = false;
+        for (let i = 0; i < row.length; i++) {
+          const ch = row[i];
+          if (ch === '"') {
+            inQuotes = !inQuotes;
+          } else if (ch === ',' && !inQuotes) {
+            result.push(current.trim());
+            current = '';
+          } else {
+            current += ch;
+          }
+        }
+        result.push(current.trim());
+        return result;
+      };
+
+      const rows = csvData.split('\n').filter((row: string) => row.trim());
       if (rows.length < 2) {
         throw new Error('Недостаточно данных в таблице');
       }
 
-      const headers = rows[0].split(',').map(h => h.replace(/"/g, '').trim());
       const dataRows = rows.slice(1);
 
-      const newsData: NewsItem[] = dataRows.map((row, index) => {
-        const cols = row.split(',').map(col => col.replace(/"/g, '').trim());
+      const newsData: NewsItem[] = dataRows.map((row: string, index: number) => {
+        const cols = parseCSVRow(row);
 
-        // Map CSV columns to NewsItem properties
+        // CSV columns: Дата | Загаловок | Описание | Источник | Ссылка | Категория
+        const date = cols[0] || '';
         const title = cols[1] || 'Без заголовка';
         const summary = cols[2] || 'Без описания';
         const source = cols[3] || 'Неизвестный источник';
+        const link = cols[4] || '';
         const category = cols[5] || 'Общее';
-        const date = cols[0] ? new Date(cols[0]).toLocaleDateString('ru-RU') : 'Недавно';
 
         // Calculate relevance based on title and summary length (simplified)
         const relevance = Math.min(100, Math.max(50, (title.length + summary.length) / 2));
@@ -163,7 +186,8 @@ export default function NewsMonitor() {
           summary,
           relevance: Math.round(relevance),
           trend,
-          readTime
+          readTime,
+          link
         };
       });
 
@@ -243,6 +267,11 @@ export default function NewsMonitor() {
               <div className="flex items-center gap-1 text-parchment/40">
                 <Clock size={12} />
                 <span className="font-body text-xs">{lastUpdated}</span>
+                {!isLoading && !isRefreshing && (
+                  <span className="font-body text-[10px] text-gold-500/60 ml-2">
+                    (авто-обновление каждые 5 мин)
+                  </span>
+                )}
               </div>
             </div>
 
@@ -276,8 +305,8 @@ export default function NewsMonitor() {
               key={cat}
               onClick={() => setActiveCategory(cat)}
               className={`font-body text-xs px-4 py-2 rounded-sm border transition-all duration-200 ${activeCategory === cat
-                  ? "border-gold-500/60 bg-gold-500/10 text-gold-400"
-                  : "border-gold-500/15 text-parchment/50 hover:border-gold-500/30 hover:text-parchment/70"
+                ? "border-gold-500/60 bg-gold-500/10 text-gold-400"
+                : "border-gold-500/15 text-parchment/50 hover:border-gold-500/30 hover:text-parchment/70"
                 }`}
             >
               {cat}
@@ -328,9 +357,20 @@ export default function NewsMonitor() {
                     <TrendingUp size={10} className="text-gold-500/50" />
                     <span className="font-body text-[10px] text-gold-500/70">{item.relevance}%</span>
                   </div>
-                  <button className="p-1.5 rounded-sm border border-gold-500/20 hover:border-gold-500/50 transition-colors">
-                    <ExternalLink size={11} className="text-parchment/50" />
-                  </button>
+                  {item.link ? (
+                    <a
+                      href={item.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-1.5 rounded-sm border border-gold-500/20 hover:border-gold-500/50 hover:bg-gold-500/10 transition-colors inline-flex"
+                    >
+                      <ExternalLink size={11} className="text-parchment/50 hover:text-gold-400" />
+                    </a>
+                  ) : (
+                    <span className="p-1.5 rounded-sm border border-gold-500/10 opacity-50 inline-flex">
+                      <ExternalLink size={11} className="text-parchment/50" />
+                    </span>
+                  )}
                 </div>
               </div>
             </div>

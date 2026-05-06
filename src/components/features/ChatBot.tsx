@@ -65,7 +65,10 @@ export default function ChatBot() {
   }, []);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    // scroll only when new messages are added or bot is typing
+    if (messages.length > 1 || isTyping) {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
   }, [messages, isTyping]);
 
   const getTime = () => {
@@ -159,8 +162,8 @@ export default function ChatBot() {
                   {/* Avatar */}
                   <div
                     className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${msg.role === "bot"
-                        ? "bg-gradient-to-br from-forest-600 to-gold-600"
-                        : "bg-gradient-to-br from-forest-500 to-forest-700 border border-gold-500/30"
+                      ? "bg-gradient-to-br from-forest-600 to-gold-600"
+                      : "bg-gradient-to-br from-forest-500 to-forest-700 border border-gold-500/30"
                       }`}
                   >
                     {msg.role === "bot" ? (
@@ -173,8 +176,8 @@ export default function ChatBot() {
                   {/* Bubble */}
                   <div
                     className={`max-w-[80%] px-4 py-3 rounded-sm ${msg.role === "bot"
-                        ? "bg-forest-800/70 border border-gold-500/15"
-                        : "bg-forest-700/80 border border-gold-500/25"
+                      ? "bg-forest-800/70 border border-gold-500/15"
+                      : "bg-forest-700/80 border border-gold-500/25"
                       }`}
                   >
                     <p className="font-body text-sm text-parchment/90 leading-relaxed whitespace-pre-line">
@@ -234,15 +237,17 @@ export default function ChatBot() {
                   style={{ minHeight: "52px" }}
                 />
                 <button
+                  type="button"
                   onClick={() => sendMessage(input)}
                   disabled={!input.trim() || isTyping}
-                  className="flex-shrink-0 w-11 h-11 rounded-sm flex items-center justify-center transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="relative z-20 flex-shrink-0 w-12 h-12 rounded-sm flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:scale-100"
                   style={{
-                    background: "linear-gradient(135deg, #c9a84c, #e8d090, #c9a84c)",
-                    backgroundSize: "200% auto",
+                    backgroundColor: !input.trim() || isTyping ? "rgba(45, 100, 56, 0.4)" : undefined,
+                    backgroundImage: !input.trim() || isTyping ? "none" : "linear-gradient(135deg, #c9a84c, #e8d090, #c9a84c)",
+                    boxShadow: input.trim() && !isTyping ? "0 0 15px rgba(201, 168, 76, 0.3)" : "none",
                   }}
                 >
-                  <Send size={16} className="text-forest-900" />
+                  <Send size={18} className={!input.trim() || isTyping ? "text-parchment/40" : "text-forest-900"} />
                 </button>
               </div>
             </div>

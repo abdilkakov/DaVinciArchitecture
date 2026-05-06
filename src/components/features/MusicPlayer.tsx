@@ -34,7 +34,7 @@ export default function MusicPlayer() {
       audio.pause();
       setPlaying(false);
     } else {
-      audio.play().then(() => setPlaying(true)).catch(() => {});
+      audio.play().then(() => setPlaying(true)).catch(() => { });
     }
   };
 
@@ -46,7 +46,7 @@ export default function MusicPlayer() {
 
       {/* Floating container */}
       <div
-        className={`fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2 transition-all duration-300`}
+        className={`fixed bottom-6 left-6 z-50 flex flex-col items-start gap-2 transition-all duration-300`}
       >
         {/* Expanded panel */}
         {expanded && (
@@ -57,9 +57,8 @@ export default function MusicPlayer() {
             {/* Track info */}
             <div className="flex items-center gap-3">
               <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                  playing ? "animate-spin-slow" : ""
-                }`}
+                className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${playing ? "animate-spin-slow" : ""
+                  }`}
                 style={{
                   background: "linear-gradient(135deg, #224d2a, #c9a84c)",
                 }}
