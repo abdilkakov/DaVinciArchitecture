@@ -1,7 +1,8 @@
 import { useEffect, useRef } from "react";
 import livingImg from "@/assets/living-arch.jpg";
 import projectImg from "@/assets/25.jpg";
-import projectVideo from "@/assets/25.mp4";
+// Video file will be loaded when available
+const projectVideo = "";
 
 const categories = [
   {
